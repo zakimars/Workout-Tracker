@@ -374,20 +374,16 @@ class WorkoutTracker {
         const sloganContainer = document.querySelector('.slogan-container');
         if (!sloganContainer) return;
 
-        // Auto-rotate slogans every 8 seconds
         setInterval(() => {
             this.updateSlogan();
         }, 8000);
 
-        // Allow user to click to change slogan
         sloganContainer.addEventListener('click', () => {
             this.updateSlogan();
         });
 
-        // Add cursor pointer to indicate it's clickable
         sloganContainer.style.cursor = 'pointer';
         
-        // Add hover effect
         sloganContainer.addEventListener('mouseenter', () => {
             sloganContainer.style.transform = 'scale(1.02)';
         });
