@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧪 Test Workout Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .test-button:hover {
+            background: #0056b3;
+        }
+        .result {
+            background: #e9ecef;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-family: monospace;
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Test Workout Tracker</h1>
+    
+    <div class="test-section">
+        <h2>1. Test LocalStorage</h2>
+        <button class="test-button" onclick="testLocalStorage()">Test LocalStorage</button>
+        <button class="test-button" onclick="clearLocalStorage()">Clear LocalStorage</button>
+        <div id="localStorageResult" class="result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>2. Test CRUD Operations</h2>
+        <button class="test-button" onclick="testCreate()">Test Create</button>
+        <button class="test-button" onclick="testRead()">Test Read</button>
+        <button class="test-button" onclick="testUpdate()">Test Update</button>
+        <button class="test-button" onclick="testDelete()">Test Delete</button>
+        <div id="crudResult" class="result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>3. Test Sample Data</h2>
+        <button class="test-button" onclick="addSampleData()">Add Sample Data</button>
+        <button class="test-button" onclick="viewCurrentData()">View Current Data</button>
+        <div id="sampleDataResult" class="result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>4. Test Validation</h2>
+        <button class="test-button" onclick="testValidation()">Test Form Validation</button>
+        <div id="validationResult" class="result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>5. Open Main App</h2>
+        <a href="index.html" class="test-button" style="text-decoration: none; display: inline-block;">Open Workout Tracker</a>
+    </div>
+
+    <script>
+        // Test LocalStorage
+        function testLocalStorage() {
+            try {
+                localStorage.setItem('test', 'test-value');
+                const result = localStorage.getItem('test');
+                localStorage.removeItem('test');
+                
+                if (result === 'test-value') {
+                    showResult('localStorageResult', '✅ LocalStorage berfungsi dengan baik!', 'success');
+                } else {
+                    showResult('localStorageResult', '❌ LocalStorage tidak berfungsi', 'error');
+                }
+            } catch (error) {
+                showResult('localStorageResult', '❌ Error: ' + error.message, 'error');
+            }
+        }
+
+        function clearLocalStorage() {
+            try {
+                localStorage.clear();
+                showResult('localStorageResult', '✅ LocalStorage berhasil dibersihkan!', 'success');
+            } catch (error) {
+                showResult('localStorageResult', '❌ Error: ' + error.message, 'error');
+            }
+        }
+
+        // Test CRUD Operations
+        function testCreate() {
+            try {
+                const testWorkout = {
+                    id: Date.now().toString(),
+                    exerciseType: 'Test Exercise',
+                    duration: 30,
+                    date: new Date().toISOString().split('T')[0],
+                    intensity: 'Medium',
+                    notes: 'Test workout',
+                    createdAt: new Date().toISOString()
+                };
+
+                const workouts = JSON.parse(localStorage.getItem('workoutTracker_workouts') || '[]');
+                workouts.unshift(testWorkout);
+                localStorage.setItem('workoutTracker_workouts', JSON.stringify(workouts));
+
+                showResult('crudResult', '✅ Create: Workout berhasil dibuat!', 'success');
+            } catch (error) {
+                showResult('crudResult', '❌ Create Error: ' + error.message, 'error');
+            }
+        }
+
+        function testRead() {
+            try {
+                const workouts = JSON.parse(localStorage.getItem('workoutTracker_workouts') || '[]');
+                showResult('crudResult', '✅ Read: ' + workouts.length + ' workout(s) ditemukan', 'success');
+            } catch (error) {
+                showResult('crudResult', '❌ Read Error: ' + error.message, 'error');
+            }
+        }
+
+        function testUpdate() {
+            try {
+                const workouts = JSON.parse(localStorage.getItem('workoutTracker_workouts') || '[]');
+                if (workouts.length > 0) {
+                    workouts[0].notes = 'Updated test workout';
+                    workouts[0].updatedAt = new Date().toISOString();
+                    localStorage.setItem('workoutTracker_workouts', JSON.stringify(workouts));
+                    showResult('crudResult', '✅ Update: Workout berhasil diupdate!', 'success');
+                } else {
+                    showResult('crudResult', '⚠️ Update: Tidak ada workout untuk diupdate', 'error');
+                }
+            } catch (error) {
+                showResult('crudResult', '❌ Update Error: ' + error.message, 'error');
+            }
+        }
+
+        function testDelete() {
+            try {
+                const workouts = JSON.parse(localStorage.getItem('workoutTracker_workouts') || '[]');
+                if (workouts.length > 0) {
+                    workouts.shift(); // Remove first workout
+                    localStorage.setItem('workoutTracker_workouts', JSON.stringify(workouts));
+                    showResult('crudResult', '✅ Delete: Workout berhasil dihapus!', 'success');
+                } else {
+                    showResult('crudResult', '⚠️ Delete: Tidak ada workout untuk dihapus', 'error');
+                }
+            } catch (error) {
+                showResult('crudResult', '❌ Delete Error: ' + error.message, 'error');
+            }
+        }
+
+        // Test Sample Data
+        function addSampleData() {
+            try {
+                const sampleWorkouts = [
+                    {
+                        id: 'sample1',
+                        exerciseType: 'Cardio',
+                        duration: 30,
+                        date: '2024-01-15',
+                        intensity: 'Medium',
+                        notes: 'Jalan cepat di pagi hari, suasana segar',
+                        createdAt: '2024-01-15T06:00:00.000Z'
+                    },
+                    {
+                        id: 'sample2',
+                        exerciseType: 'Strength Training',
+                        duration: 45,
+                        date: '2024-01-14',
+                        intensity: 'High',
+                        notes: 'Latihan beban untuk otot dada dan lengan',
+                        createdAt: '2024-01-14T18:00:00.000Z'
+                    },
+                    {
+                        id: 'sample3',
+                        exerciseType: 'Yoga',
+                        duration: 60,
+                        date: '2024-01-13',
+                        intensity: 'Low',
+                        notes: 'Sesi yoga untuk relaksasi dan fleksibilitas',
+                        createdAt: '2024-01-13T07:00:00.000Z'
+                    }
+                ];
+
+                localStorage.setItem('workoutTracker_workouts', JSON.stringify(sampleWorkouts));
+                showResult('sampleDataResult', '✅ Sample data berhasil ditambahkan!', 'success');
+            } catch (error) {
+                showResult('sampleDataResult', '❌ Error: ' + error.message, 'error');
+            }
+        }
+
+        function viewCurrentData() {
+            try {
+                const workouts = JSON.parse(localStorage.getItem('workoutTracker_workouts') || '[]');
+                if (workouts.length > 0) {
+                    const dataStr = JSON.stringify(workouts, null, 2);
+                    showResult('sampleDataResult', '📊 Current Data:\n' + dataStr, 'success');
+                } else {
+                    showResult('sampleDataResult', '📭 Tidak ada data workout', 'error');
+                }
+            } catch (error) {
+                showResult('sampleDataResult', '❌ Error: ' + error.message, 'error');
+            }
+        }
+
+        // Test Validation
+        function testValidation() {
+            try {
+                // Test required fields
+                const requiredFields = ['exerciseType', 'duration', 'date'];
+                const testData = {
+                    exerciseType: '',
+                    duration: 0,
+                    date: ''
+                };
+
+                let isValid = true;
+                let errors = [];
+
+                if (!testData.exerciseType) {
+                    isValid = false;
+                    errors.push('Jenis latihan wajib diisi');
+                }
+                if (!testData.duration || testData.duration <= 0) {
+                    isValid = false;
+                    errors.push('Durasi harus lebih dari 0');
+                }
+                if (!testData.date) {
+                    isValid = false;
+                    errors.push('Tanggal wajib diisi');
+                }
+
+                if (isValid) {
+                    showResult('validationResult', '✅ Validation berfungsi dengan baik!', 'success');
+                } else {
+                    showResult('validationResult', '⚠️ Validation errors:\n' + errors.join('\n'), 'error');
+                }
+            } catch (error) {
+                showResult('validationResult', '❌ Validation Error: ' + error.message, 'error');
+            }
+        }
+
+        // Helper function
+        function showResult(elementId, message, type) {
+            const element = document.getElementById(elementId);
+            element.textContent = message;
+            element.className = 'result ' + type;
+        }
+
+        // Auto-run basic tests on load
+        window.onload = function() {
+            testLocalStorage();
+            testRead();
+        };
+    </script>
+</body>
+</html>

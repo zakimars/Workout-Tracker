@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workout Tracker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1><i class="fas fa-dumbbell"></i> Workout Tracker</h1>
+            <div class="slogan-container">
+                <p class="slogan" id="mainSlogan">Lacak latihan harian Anda dengan mudah</p>
+                <p class="slogan-subtitle">Transformasi tubuh dimulai dari langkah kecil setiap hari</p>
+            </div>
+        </header>
+
+        
+
+        <!-- Workout List -->
+        <section class="list-section">
+            <div class="list-header">
+                <h2><i class="fas fa-list"></i> Daftar Latihan</h2>
+                <div class="list-controls">
+                    <a href="form.html" class="btn btn-primary" style="white-space: nowrap;"><i class="fas fa-plus"></i> Tambah Latihan</a>
+                    <input type="text" id="searchInput" placeholder="Cari latihan..." class="search-input">
+                    <select id="filterType" class="filter-select">
+                        <option value="">Semua Jenis</option>
+                        <option value="Cardio">Cardio</option>
+                        <option value="Strength Training">Strength Training</option>
+                        <option value="Core">Core</option>
+                        <option value="Abs">Abs</option>
+                        <option value="Upper Body">Upper Body</option>
+                        <option value="Lower Body">Lower Body</option>
+                        <option value="Full Body">Full Body</option>
+                        <option value="HIIT">HIIT</option>
+                        <option value="Flexibility">Flexibility</option>
+                        <option value="Balance">Balance</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="workout-stats">
+                <div class="stat-card">
+                    <i class="fas fa-calendar-check"></i>
+                    <div class="stat-info">
+                        <span class="stat-number" id="totalWorkouts">0</span>
+                        <span class="stat-label">Total Latihan</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-clock"></i>
+                    <div class="stat-info">
+                        <span class="stat-number" id="totalMinutes">0</span>
+                        <span class="stat-label">Total Menit</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-fire"></i>
+                    <div class="stat-info">
+                        <span class="stat-number" id="avgIntensity">-</span>
+                        <span class="stat-label">Rata-rata Intensitas</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="workoutList" class="workout-list">
+                <!-- Workout items will be dynamically added here -->
+            </div>
+            
+            <div id="noWorkouts" class="no-workouts" style="display: none;">
+                <i class="fas fa-inbox"></i>
+                <p>Belum ada latihan yang dicatat</p>
+                <p>Mulai dengan menambahkan latihan pertama Anda!</p>
+            </div>
+        </section>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <h3><i class="fas fa-exclamation-triangle"></i> Konfirmasi</h3>
+            <p id="confirmMessage">Apakah Anda yakin ingin menghapus latihan ini?</p>
+            <div class="modal-actions">
+                <button id="confirmYes" class="btn btn-danger">Ya, Hapus</button>
+                <button id="confirmNo" class="btn btn-secondary">Batal</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Toast -->
+    <div id="toast" class="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">Berhasil!</span>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
